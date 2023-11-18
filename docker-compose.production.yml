@@ -12,26 +12,26 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    build: ./backend/
+    image: lifaalbina/kittygram_backend
     env_file: .env
+    depends_on:
+      - db
     volumes:
       - static:/static/
       - media:/media/
-    depends_on:
-      - db
   frontend:
     env_file: .env
-    build: ./frontend/
+    image: lifaalbina/kittygram_frontend
     volumes:
       - static:/static
   gateway:
-    build: ./nginx/
+    image: lifaalbina/kittygram_gateway
     env_file: .env
     ports:
       - 9000:80
-    volumes:
-      - static:/static
-      - media:/media
     depends_on:
       - backend
       - frontend
+    volumes:
+      - static:/static
+      - media:/media
